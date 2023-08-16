@@ -12,6 +12,7 @@ namespace ConsoleAppCert
         void AddGrade(double grade);
         void AddGrade(string grade);
         void PartialResults();
+        void PartialResults(List<double> grades);
         Statistics GetStatistics();
     }
 }

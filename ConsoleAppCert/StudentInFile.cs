@@ -2,7 +2,7 @@
 {
     public class StudentInFile : StudentBase
     {
-        private List<double> grades = new List<double>();
+        internal List<double> grades = new List<double>();
         public override event GradeAddedDelegate GradeAdded;
         private const string fileName = "grades.txt";
 
@@ -33,15 +33,18 @@
         public override Statistics GetStatistics()
         {
             var fullFileName = $"{Surname}_{Name}_{Age}_{fileName}";
-            using (var reader = File.OpenText(fullFileName))
+            if (File.Exists(fullFileName))
             {
-                var line = reader.ReadLine();
-                while (line != null)
+                using (var reader = File.OpenText(fullFileName))
                 {
-                    line = reader.ReadLine();
-                    if ((double.TryParse(line, out double result)) && (result > 0 && result <= 6))
+                    var line = reader.ReadLine();
+                    while (line != null)
                     {
-                        grades.Add((double)result);
+                        line = reader.ReadLine();
+                        if ((double.TryParse(line, out double result)) && (result > 0 && result <= 6))
+                        {
+                            grades.Add((double)result);
+                        }
                     }
                 }
             }
@@ -55,12 +58,17 @@
 
         public override void PartialResults()
         {
-            Console.WriteLine("oceny cząstkowe: ");
-            foreach (var item in grades)
+            PartialResults(grades);
+        }
+        public static void StudentSaveInMemoryToTxt(List<double> grades, string fullFileName)
+        {
+            using (var writer = File.AppendText($"{fullFileName}"))
             {
-                Console.Write($"{item:N2}, ");
+                foreach (var item in grades)
+                {
+                    writer.WriteLine(item);
+                }
             }
-            Console.WriteLine();
         }
     }
 }

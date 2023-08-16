@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace ConsoleAppCert
+﻿namespace ConsoleAppCert
 {
     public class Program
     {
@@ -12,13 +10,13 @@ namespace ConsoleAppCert
                 Console.WriteLine("Dane podać dane Ucznia:");
 
                 string name = InputCheckingName("imię     ");
-                if (name == "Q") { break; }
+                if (name == "Q") break;
 
                 string surname = InputCheckingName("nazwisko");
-                if (surname == "Q") { break; }
+                if (surname == "Q") break;
 
                 string ageString = InputCheckingAge("wiek");
-                if (ageString == "Q") { break; }
+                if (ageString == "Q") break;
                 int age = int.Parse(ageString);
                 Console.WriteLine("");
                 Console.WriteLine("\tWybierz sposób wprowadzania ocen:");
@@ -70,8 +68,8 @@ namespace ConsoleAppCert
         {
             ConsoleHeadlineText();
             string s = $"Dla {name} {surname} lat {age} wprowadzaj oceny z zakresu: ";
-            if (age > 9) { s += "'1-6'"; }
-            else { s += "'ABCDEF'"; }
+            if (age > 9) s += "'1-6'";
+            else s += "'ABCDEF'";
             Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
             ConsoleMessageColor(ConsoleColor.Green, s);
             Console.WriteLine();
@@ -90,7 +88,7 @@ namespace ConsoleAppCert
             while (true)
             {
                 inputUser = Console.ReadLine().Trim().ToUpper();
-                if (inputUser == "Q") { return "Q"; }
+                if (inputUser == "Q") return "Q";
 
                 if (!int.TryParse(inputUser, out int age) || (age < 6) || (age > 15))
                 {
@@ -108,7 +106,7 @@ namespace ConsoleAppCert
             while (inputUser.Length < 3)
             {
                 inputUser = Console.ReadLine().Trim();
-                if (inputUser == "q" || inputUser == "Q") { return "Q"; }
+                if (inputUser == "q" || inputUser == "Q") return "Q";
                 if (inputUser.Length < 3)
                 {
                     ConsoleMessageColor(ConsoleColor.DarkRed, $"\aPodano za krótkie {text}, podaj jeszcze raz");
@@ -124,11 +122,11 @@ namespace ConsoleAppCert
             ConsoleMessageColor(ConsoleColor.Magenta, "Oceny są wprowadzane do pamięci komutera (możliwość zapisu po zakończeniu wprowadzania)");
             EnterGrade(student);
             DisplayStatistics(student);
-            ConsoleMessageColor(ConsoleColor.DarkRed, "\aCzy zapisać wprowadzone oceny do pliku 'txt'? T - tak");
-            string inputUser = Console.ReadLine().ToUpper().Trim();
-            if (inputUser == "T")
+            if (student.grades.Count > 0)
             {
-                student.StudentSaveInMemoryToTxt();
+                ConsoleMessageColor(ConsoleColor.DarkRed, "\aCzy zapisać wprowadzone oceny do pliku 'txt'? T - tak");
+                string inputUser = Console.ReadLine().ToUpper().Trim();
+                if (inputUser == "T") student.StudentSaveInMemoryToTxt();
             }
         }
 
@@ -175,12 +173,12 @@ namespace ConsoleAppCert
             var statistics = student.GetStatistics();
             Console.WriteLine();
             ConsoleMessageColor(ConsoleColor.DarkBlue, $"Wyniki dla: {student.Name} {student.Surname} lat: {student.Age}");
-            student.PartialResults();
             if (statistics.Count > 0)
             {
+                student.PartialResults();
                 ConsoleMessageColor(ConsoleColor.DarkBlue, $"\tMin: {statistics.Min:N2} \tMax: {statistics.Max:N2} \tŚrednia: {statistics.Average:N2} ({statistics.Sum}/{statistics.Count}), \tOgólna ocena: {statistics.AverageLetter}");
             }
-            else { ConsoleMessageColor(ConsoleColor.DarkRed, "\a\tBrak wyników do wyświetlenia"); }
+            else ConsoleMessageColor(ConsoleColor.DarkRed, "\a\tBrak wyników do wyświetlenia");
             Console.WriteLine();
             Console.WriteLine("zakończono wyświetlanie statystyk Ucznia, wciśnij dowolny klawisz, aby przejść do wprowadzania kolejnego ucznia");
             Console.ReadKey();

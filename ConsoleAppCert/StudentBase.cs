@@ -17,7 +17,7 @@
 
         public void AddGrade(string grade)
         {
-            if (grade == "Q" || grade == "Z") { return; }
+            if (grade == "Q" || grade == "Z") return;
 
             double addSmallGrade = 0;
             if (grade.Length == 2)
@@ -72,5 +72,14 @@
         }
         public abstract Statistics GetStatistics();
         public abstract void PartialResults();
+        public void PartialResults(List<double> grades)
+        {
+            Console.WriteLine("oceny cząstkowe: ");
+            foreach (var item in grades)
+            {
+                Console.Write($"{item:N2}, ");
+            }
+            Console.WriteLine();
+        }
     }
 }
