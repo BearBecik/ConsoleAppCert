@@ -6,9 +6,9 @@
         public abstract event GradeAddedDelegate GradeAdded;
         internal List<double> grades = new List<double>();
 
-        public override string Name { get; set; }
-        public override string Surname { get; set; }
-        public override int Age { get; set; }
+        //public override string Name { get; set; }
+        //public override string Surname { get; set; }
+        //public override int Age { get; set; }
 
         public StudentBase(string name, string surname, int age) : base(name, surname, age)
         {
