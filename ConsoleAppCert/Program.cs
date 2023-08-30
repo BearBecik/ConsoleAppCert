@@ -35,7 +35,6 @@
                         case "1":
                             AddGradersToMemory(name, surname, age);
                             Finish = true;
-
                             break;
                         case "2":
                             AddGradersToFile(name, surname, age);
@@ -69,7 +68,7 @@
             ConsoleHeadlineText();
             string s = $"Dla {name} {surname} lat {age} wprowadzaj oceny z zakresu: ";
             if (age > 9) s += "'1-6'";
-            else s += "'ABCDEF'";
+            else s += "'ABCDE', gdzie 'A' - ocena najwyższa (6), 'F' - ocena najniższa (1)";
             Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
             ConsoleMessageColor(ConsoleColor.Green, s);
             Console.WriteLine();
@@ -92,7 +91,7 @@
 
                 if (!int.TryParse(inputUser, out int age) || (age < 6) || (age > 15))
                 {
-                    ConsoleMessageColor(ConsoleColor.DarkRed, $"\aPodano błędny wiek Ucznia, podaj jeszcze raz");
+                    ConsoleMessageColor(ConsoleColor.DarkRed, $"\aPodano błędny wiek Ucznia (wiek w przedziale 6-15 lat), podaj jeszcze raz");
                 }
                 else break;
             }
@@ -109,7 +108,7 @@
                 if (inputUser == "q" || inputUser == "Q") return "Q";
                 if (inputUser.Length < 3)
                 {
-                    ConsoleMessageColor(ConsoleColor.DarkRed, $"\aPodano za krótkie {text}, podaj jeszcze raz");
+                    ConsoleMessageColor(ConsoleColor.DarkRed, $"\aPodano za krótkie {text.Trim()} Ucznia  - wymagane minimum 3 znaki, podaj jeszcze raz");
                 }
             }
             return inputUser[0].ToString().ToUpper() + inputUser[1..].ToLower();
@@ -122,11 +121,14 @@
             ConsoleMessageColor(ConsoleColor.Magenta, "Oceny są wprowadzane do pamięci komutera (możliwość zapisu po zakończeniu wprowadzania)");
             EnterGrade(student);
             DisplayStatistics(student);
-            if (student.grades.Count > 0)
+            if (student.Grades.Count > 0)
             {
                 ConsoleMessageColor(ConsoleColor.DarkRed, "\aCzy zapisać wprowadzone oceny do pliku 'txt'? T - tak");
                 string inputUser = Console.ReadLine().ToUpper().Trim();
-                if (inputUser == "T") student.StudentSaveInMemoryToTxt();
+                if (inputUser == "T")
+                {
+                    StudentInFile.SaveGradesInMemoryToFile(student.Grades, $"{surname}_{name}_{age}");
+                }
             }
         }
 
@@ -141,19 +143,20 @@
 
         private static void EnterGrade(IStudent student)
         {
-            student.GradeAdded += StudentGradeAdded;
             void StudentGradeAdded(object sender, EventArgs arg)
             {
                 Console.WriteLine("Dodano nową ocenę");
             }
+            student.GradeAdded += StudentGradeAdded;
+
             Console.WriteLine();
-            Console.WriteLine("Wprowadź pierwszą ocenę (każdą zatwierdź enterem, 'q-quit' koniec wprowadzania ocen)");
+            Console.WriteLine("Wprowadź pierwszą ocenę (każdą zatwierdź enterem)");
             Console.WriteLine();
 
             while (true)
             {
                 var input = Console.ReadLine().ToUpper().Trim();
-                if (input == "Q" || input == "Q")
+                if (input == "Q")
                 {
                     break;
                 }
@@ -163,7 +166,7 @@
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"Exception: {e.Message}");
+                    Console.WriteLine($"Błąd wprowadzania: {e.Message}");
                 }
             }
         }
@@ -180,7 +183,7 @@
             }
             else ConsoleMessageColor(ConsoleColor.DarkRed, "\a\tBrak wyników do wyświetlenia");
             Console.WriteLine();
-            Console.WriteLine("zakończono wyświetlanie statystyk Ucznia, wciśnij dowolny klawisz, aby przejść do wprowadzania kolejnego ucznia");
+            Console.WriteLine("zakończono wyświetlanie statystyk Ucznia, wciśnij dowolny klawisz, aby przejść do wprowadzania ocen kolejnego ucznia");
             Console.ReadKey();
         }
     }

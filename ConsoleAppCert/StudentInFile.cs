@@ -2,7 +2,6 @@
 {
     public class StudentInFile : StudentBase
     {
-        internal List<double> grades = new List<double>();
         public override event GradeAddedDelegate GradeAdded;
         private const string fileName = "grades.txt";
 
@@ -43,25 +42,23 @@
                         line = reader.ReadLine();
                         if ((double.TryParse(line, out double result)) && (result > 0 && result <= 6))
                         {
-                            grades.Add((double)result);
+                            Grades.Add((double)result);
                         }
                     }
                 }
             }
             var statistics = new Statistics();
-            foreach (var grade in grades)
+            foreach (var grade in Grades)
             {
                 statistics.AddGrade(grade);
             }
             return statistics;
         }
 
-        public override void PartialResults()
+        public static void SaveGradesInMemoryToFile(List<double> grades, string surnameNameAge)
         {
-            PartialResults(grades);
-        }
-        public static void StudentSaveInMemoryToTxt(List<double> grades, string fullFileName)
-        {
+
+            var fullFileName = $"{surnameNameAge}_{fileName}";
             using (var writer = File.AppendText($"{fullFileName}"))
             {
                 foreach (var item in grades)

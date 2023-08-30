@@ -4,10 +4,7 @@
     {
         public delegate void GradeAddedDelegate(object sender, EventArgs args);
         public abstract event GradeAddedDelegate GradeAdded;
-
-        public override string Name { get; set; }
-        public override string Surname { get; set; }
-        public override int Age { get; set; }
+        internal List<double> Grades = new();
 
         public StudentBase(string name, string surname, int age) : base(name, surname, age)
         {
@@ -17,7 +14,7 @@
 
         public void AddGrade(string grade)
         {
-            if (grade == "Q" || grade == "Z") return;
+            if (grade == "Q") return;
 
             double addSmallGrade = 0;
             if (grade.Length == 2)
@@ -34,9 +31,22 @@
                 }
             }
 
-            if (double.TryParse(grade, out double result) && result >= double.MinValue && result <= double.MaxValue && Age > 9)
+            //if (double.TryParse(grade, out double result) && result >= double.MinValue && result <= double.MaxValue && Age > 9)
+            if (double.TryParse(grade, out double result) && result >= 1 && result <= 6 && Age > 9)
             {
-                AddGrade((double)(result + addSmallGrade));
+                switch (result)
+                {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 5:
+                    case 6:
+                        AddGrade(result + addSmallGrade);
+                        break;
+                    default:
+                        throw new Exception("\adopuszczalne oceny: 1, 2, 3, 4, 5 i 6 ze znakiem '+' lub '-'");
+                }
             }
             else if (Age <= 9)
             {
@@ -61,23 +71,24 @@
                         AddGrade(1 + addSmallGrade);
                         break;
                     default:
-                        throw new Exception("\aPodano błędną ocenę, dopuszczalne wartości?: A-E");
-                        break;
+                        throw new Exception("\adopuszczalne oceny: A, B, C, D, E i F ze znakiem '+' lub '-'");
                 }
             }
             else
             {
-                throw new Exception("\aWprowadzona ocenę jest z poza dopuszczalnego zakresu");
+                throw new Exception("\aocena z poza dopuszczalnego zakresu");
             }
         }
         public abstract Statistics GetStatistics();
-        public abstract void PartialResults();
-        public void PartialResults(List<double> grades)
+        public void PartialResults()
         {
             Console.WriteLine("oceny cząstkowe: ");
-            foreach (var item in grades)
+            int index = 0;
+            foreach (var item in Grades)
             {
-                Console.Write($"{item:N2}, ");
+                if (index == Grades.Count - 1) { Console.Write($"{item:N2}"); }
+                else Console.Write($"{item:N2}, ");
+                index++;
             }
             Console.WriteLine();
         }
