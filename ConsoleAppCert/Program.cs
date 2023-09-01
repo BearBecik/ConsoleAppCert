@@ -20,7 +20,7 @@
                 int age = int.Parse(ageString);
                 Console.WriteLine("");
                 Console.WriteLine("\tWybierz sposób wprowadzania ocen:");
-                Console.WriteLine("\t\t1. Wprowadzanie do pamięci komputera (z możliwością zapisu do pliku po zakończeniu wprowadzania)");
+                Console.WriteLine("\t\t1. Wprowadzanie do pamięci komputera");
                 Console.WriteLine("\t\t2. wprowadzanie/dopisywanie ocen do pliku 'txt'");
                 Console.WriteLine("\t\tQ - zakończenie wprowadzania");
                 Console.WriteLine("");
@@ -118,18 +118,9 @@
         {
             var student = new StudentInMemory(name, surname, age);
             ConsoleHeadlineTextFinish(name, surname, age);
-            ConsoleMessageColor(ConsoleColor.Magenta, "Oceny są wprowadzane do pamięci komutera (możliwość zapisu po zakończeniu wprowadzania)");
+            ConsoleMessageColor(ConsoleColor.Magenta, "Oceny są wprowadzane do pamięci komutera");
             EnterGrade(student);
             DisplayStatistics(student);
-            if (student.Grades.Count > 0)
-            {
-                ConsoleMessageColor(ConsoleColor.DarkRed, "\aCzy zapisać wprowadzone oceny do pliku 'txt'? T - tak");
-                string inputUser = Console.ReadLine().ToUpper().Trim();
-                if (inputUser == "T")
-                {
-                    StudentInFile.SaveGradesInMemoryToFile(student.Grades, $"{surname}_{name}_{age}");
-                }
-            }
         }
 
         private static void AddGradersToFile(string name, string surname, int age)
@@ -173,13 +164,14 @@
 
         private static void DisplayStatistics(IStudent student)
         {
-            var statistics = student.GetStatistics();
             Console.WriteLine();
             ConsoleMessageColor(ConsoleColor.DarkBlue, $"Wyniki dla: {student.Name} {student.Surname} lat: {student.Age}");
+            Console.WriteLine("oceny cząstkowe: ");
+            var statistics = student.GetStatistics();
             if (statistics.Count > 0)
             {
-                student.PartialResults();
-                ConsoleMessageColor(ConsoleColor.DarkBlue, $"\tMin: {statistics.Min:N2} \tMax: {statistics.Max:N2} \tŚrednia: {statistics.Average:N2} ({statistics.Sum}/{statistics.Count}), \tOgólna ocena: {statistics.AverageLetter}");
+                Console.WriteLine();
+                ConsoleMessageColor(ConsoleColor.DarkBlue, $"Oceny: \tNajniższa: {statistics.Min:N2} \tNajwyższa: {statistics.Max:N2} \tŚrednia: {statistics.Average:N2} ({statistics.Sum}/{statistics.Count}), \tocena ogólna: {statistics.AverageLetter}");
             }
             else ConsoleMessageColor(ConsoleColor.DarkRed, "\a\tBrak wyników do wyświetlenia");
             Console.WriteLine();

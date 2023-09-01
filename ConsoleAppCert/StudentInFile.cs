@@ -3,6 +3,7 @@
     public class StudentInFile : StudentBase
     {
         public override event GradeAddedDelegate GradeAdded;
+
         private const string fileName = "grades.txt";
 
         public StudentInFile(string name, string surname, int age) : base(name, surname, age)
@@ -11,7 +12,7 @@
 
         public override void AddGrade(double grade)
         {
-            if (grade > 0 && grade <= 6)
+            if (grade > 0 && grade <= 6.50)
             {
                 var fullFileName = $"{Surname}_{Name}_{Age}_{fileName}";
                 using (var writer = File.AppendText($"{fullFileName}"))
@@ -31,6 +32,7 @@
 
         public override Statistics GetStatistics()
         {
+            var statistics = new Statistics();
             var fullFileName = $"{Surname}_{Name}_{Age}_{fileName}";
             if (File.Exists(fullFileName))
             {
@@ -39,33 +41,17 @@
                     var line = reader.ReadLine();
                     while (line != null)
                     {
-                        line = reader.ReadLine();
-                        if ((double.TryParse(line, out double result)) && (result > 0 && result <= 6))
+                        if (double.TryParse(line, out double grade))
                         {
-                            Grades.Add((double)result);
+                            statistics.AddGrade(grade);
+                            Console.Write($"{grade:N2}");
                         }
+                        line = reader.ReadLine();
+                        if (line != null) Console.Write(", ");
                     }
                 }
             }
-            var statistics = new Statistics();
-            foreach (var grade in Grades)
-            {
-                statistics.AddGrade(grade);
-            }
             return statistics;
-        }
-
-        public static void SaveGradesInMemoryToFile(List<double> grades, string surnameNameAge)
-        {
-
-            var fullFileName = $"{surnameNameAge}_{fileName}";
-            using (var writer = File.AppendText($"{fullFileName}"))
-            {
-                foreach (var item in grades)
-                {
-                    writer.WriteLine(item);
-                }
-            }
         }
     }
 }

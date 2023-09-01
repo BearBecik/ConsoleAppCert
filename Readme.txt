@@ -6,5 +6,4 @@ Zakres ocen:
 Przy każdej ocenie, bez względu na wiek Ucznia, można wprowadzić znak "+" (dodaje 0.50 do oceny) lub "-" (odejmuje 0.25 od oceny). Znaki te mogą wystapić po dowolnej stronie oceny.
 Po zakończeniu wprowadzania ocen wyświetlane są wszystkie oceny częstkowe (również te wcześniej zapisane w pliku txt) i pokazane są statystyki ocen: minimalna, maksymalna oraz średnia.
 
-Dodatkowo, po wprowadzeniu ocen w InMemory istnieje możliwość zapisu do pliku txt.
 (programik jest bardzo, ale to bardzo uproszczony i wiele można w nim jeszcze zmienić, rozbudować, zabezpieczyć itd.)

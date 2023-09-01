@@ -11,7 +11,6 @@ namespace ConsoleAppCert
         event GradeAddedDelegate GradeAdded;
         void AddGrade(double grade);
         void AddGrade(string grade);
-        void PartialResults();
         Statistics GetStatistics();
     }
 }
