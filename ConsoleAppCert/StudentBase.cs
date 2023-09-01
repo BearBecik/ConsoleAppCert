@@ -93,5 +93,7 @@
         }
 
         public abstract Statistics GetStatistics();
+
+        public abstract void WriteGrades();
     }
 }

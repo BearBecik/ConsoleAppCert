@@ -28,15 +28,22 @@
         public override Statistics GetStatistics()
         {
             var statistics = new Statistics();
-            int i = 0;
             foreach (var grade in grades)
             {
                 statistics.AddGrade(grade);
-                if (i == grades.Count - 1) { Console.Write($"{grade:N2}"); }
-                else Console.Write($"{grade:N2}, ");
-                i++;
             }
             return statistics;
+        }
+        public override void WriteGrades()
+        {
+            int i = 0;
+            foreach (var grade in grades)
+            {
+                if (i != grades.Count - 1) { Console.Write($"{grade:N2}, "); }
+                else Console.Write($"{grade:N2}");
+                i++;
+            }
+            Console.WriteLine();
         }
     }
 }

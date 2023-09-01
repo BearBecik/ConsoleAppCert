@@ -9,8 +9,13 @@ namespace ConsoleAppCert
         int Age { get; }
 
         event GradeAddedDelegate GradeAdded;
+
         void AddGrade(double grade);
+
         void AddGrade(string grade);
+
         Statistics GetStatistics();
+
+        void WriteGrades();
     }
 }

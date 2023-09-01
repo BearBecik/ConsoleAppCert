@@ -2,7 +2,7 @@
 {
     public class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             while (true)
             {
@@ -36,13 +36,16 @@
                             AddGradersToMemory(name, surname, age);
                             Finish = true;
                             break;
+
                         case "2":
                             AddGradersToFile(name, surname, age);
                             Finish = true;
                             break;
+
                         case "Q":
                             Finish = true;
                             break;
+
                         default:
                             Console.Write("\aBłędny wybór, wybierz ponownie opcję: 1, 2 lub Q:  ");
                             continue;
@@ -63,12 +66,13 @@
             Console.WriteLine("użycie 'q' powoduje zakończenie wprowadzania");
             Console.WriteLine();
         }
+
         private static void ConsoleHeadlineTextFinish(string name, string surname, int age)
         {
             ConsoleHeadlineText();
             string s = $"Dla {name} {surname} lat {age} wprowadzaj oceny z zakresu: ";
             if (age > 9) s += "'1-6'";
-            else s += "'ABCDE', gdzie 'A' - ocena najwyższa (6), 'F' - ocena najniższa (1)";
+            else s += "'ABCDEF', gdzie 'A' - ocena najwyższa (6), 'F' - ocena najniższa (1)";
             Console.SetCursorPosition((Console.WindowWidth - s.Length) / 2, Console.CursorTop);
             ConsoleMessageColor(ConsoleColor.Green, s);
             Console.WriteLine();
@@ -80,6 +84,7 @@
             Console.WriteLine(text);
             Console.ResetColor();
         }
+
         public static string InputCheckingAge(string text)
         {
             Console.Write($"{text} \t\t");
@@ -166,11 +171,12 @@
         {
             Console.WriteLine();
             ConsoleMessageColor(ConsoleColor.DarkBlue, $"Wyniki dla: {student.Name} {student.Surname} lat: {student.Age}");
-            Console.WriteLine("oceny cząstkowe: ");
+            Console.Write("oceny cząstkowe: ");
+            student.WriteGrades();
+            Console.WriteLine();
             var statistics = student.GetStatistics();
             if (statistics.Count > 0)
             {
-                Console.WriteLine();
                 ConsoleMessageColor(ConsoleColor.DarkBlue, $"Oceny: \tNajniższa: {statistics.Min:N2} \tNajwyższa: {statistics.Max:N2} \tŚrednia: {statistics.Average:N2} ({statistics.Sum}/{statistics.Count}), \tocena ogólna: {statistics.AverageLetter}");
             }
             else ConsoleMessageColor(ConsoleColor.DarkRed, "\a\tBrak wyników do wyświetlenia");

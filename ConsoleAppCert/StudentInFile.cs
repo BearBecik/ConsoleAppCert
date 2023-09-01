@@ -44,14 +44,34 @@
                         if (double.TryParse(line, out double grade))
                         {
                             statistics.AddGrade(grade);
-                            Console.Write($"{grade:N2}");
                         }
                         line = reader.ReadLine();
-                        if (line != null) Console.Write(", ");
                     }
                 }
             }
             return statistics;
+        }
+
+        public override void WriteGrades()
+        {
+            var fullFileName = $"{Surname}_{Name}_{Age}_{fileName}";
+            if (File.Exists(fullFileName))
+            {
+                using (var reader = File.OpenText(fullFileName))
+                {
+                    var line = reader.ReadLine();
+                    while (line != null)
+                    {
+                        if (double.TryParse(line, out double grade))
+                        {
+                            Console.Write($"{grade:N2}");
+                            line = reader.ReadLine();
+                            if (line != null) Console.Write(", ");
+                        }
+                    }
+                }
+            }
+            Console.WriteLine();
         }
     }
 }
